@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+    <item android:id="@+id/action_dbsettings" android:title="@string/db_settings"
+        android:orderInCategory="100" app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/menu_db_create" android:title="@string/menu_db_create"
+                android:onClick="menuDBCreateClick"></item>
+            <item android:id="@+id/menu_db_make_test_data" android:title="@string/menu_db_make_test_data"
+                android:onClick="menuDBCreateTestDataClick"></item>
+            <item android:id="@+id/menu_db_import" android:title="@string/menu_db_import"></item>
+            <item android:id="@+id/menu_db_export" android:title="@string/menu_db_export"
+                android:onClick="menuDBExportClick"></item>
+            <item android:id="@+id/menu_db_wipeout" android:title="@string/menu_db_wipeout"></item>
+        </menu>
+    </item>
+    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="100" app:showAsAction="never" />
+</menu>

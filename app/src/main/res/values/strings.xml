@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">TestDBApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="main_message">This is the main message of this app!</string>
+    <string name="db_settings">Database Settings</string>
+    <string name="menu_db_create">Create Activity Journal Database</string>
+    <string name="menu_db_import">Import into Activity Journal</string>
+    <string name="menu_db_export">Export Activity Journal Database</string>
+    <string name="menu_db_wipeout">Wipe Out Activity Journal Database</string>
+    <string name="menu_db_make_test_data">Make Test Data</string>
+</resources>
