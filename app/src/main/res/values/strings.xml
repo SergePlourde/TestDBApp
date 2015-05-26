@@ -11,4 +11,5 @@
     <string name="menu_db_wipeout">Wipe Out Activity Journal Database</string>
     <string name="menu_db_make_test_data">Make Test Data</string>
     <string name="menu_db_delete">Delete Database</string>
+    <string name="menu_db_database_management">Database Management</string>
 </resources>

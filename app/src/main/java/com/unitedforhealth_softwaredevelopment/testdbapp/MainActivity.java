@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -19,14 +21,17 @@ import java.util.HashMap;
 
 
 public class MainActivity extends ActionBarActivity {
-    private DBTools dbTools = null;
+    DBTools dbTools = new DBTools(this);
+    private EditText dataDisplayEditText = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        dbTools.rebuildDB();
-
         setContentView(R.layout.activity_main);
+        dataDisplayEditText = (EditText) this.findViewById(R.id.dataDisplayEditText);
+        dataDisplayEditText.setText("No data published yet!");
+
+
     }
 
     @Override
@@ -51,18 +56,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void menuDBCreateClick(MenuItem item) {
-        dbTools = getDBTools();
-        Cursor cursor = dbTools.getAllDBTables();
-        String dbName = dbTools.createDB();
-        Toast.makeText(MainActivity.this, "Database has " + cursor.getCount() + " tables", Toast.LENGTH_LONG).show();
-
-        if (dbName.length() == 0){
-            Toast.makeText(MainActivity.this, "Database does not exists. If you want to re-create it, please delete it first", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(MainActivity.this, "Database " + dbName + " has been created successfully.", Toast.LENGTH_LONG).show();
-        }
-    }
 
 
     /**
@@ -89,6 +82,8 @@ public class MainActivity extends ActionBarActivity {
 
     public void menuDBMakeTestDataClick(MenuItem item) {
         dbTools.makeTestData();
+        Toast.makeText(MainActivity.this, "Test data has been created.", Toast.LENGTH_LONG).show();
+
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -115,6 +110,7 @@ public class MainActivity extends ActionBarActivity {
                         boolean isDeleted = db.delete();
                         if (isDeleted) {
                             Toast.makeText(MainActivity.this, db + " is deleted.", Toast.LENGTH_LONG).show();
+                            dbTools = new DBTools(MainActivity.this);
 
                         } else {
                             Toast.makeText(MainActivity.this, "Unable to delete "+db, Toast.LENGTH_LONG).show();
@@ -132,9 +128,18 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void showDataButtonClick(View view) {
-        Toast.makeText(MainActivity.this,
-                "Please be patient, this functionality is still under construction.",
-                Toast.LENGTH_LONG).show();
+        ArrayList<HashMap<String, String>> activities = dbTools.getActivities();
+        StringBuilder sb = new StringBuilder();
+        if (activities.size() > 0){
+            for (HashMap<String, String> activity : activities) {
+                sb.append(activity.get("activityId")).append(": ").append(activity.get("activityName")).append("\n");
+            }
+
+        } else {
+            sb.append("No activities to list!");
+        }
+
+        dataDisplayEditText.setText(sb.toString());
 
     }
 }
