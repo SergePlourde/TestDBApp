@@ -5,11 +5,13 @@ package com.unitedforhealth_softwaredevelopment.testdbapp;
  * Based on Derek Banas' Android Development Tutorial 12
  */
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 // SQLiteOpenHelper helps you open or create a database
 //@todo: to view all bookmarks in a project, press Shift+F11
 public class DBTools extends SQLiteOpenHelper {
+    public final static String DATABASE_NAME = "activitytimesheet.db";
     public final static String ACTIVITY_TABLE_NAME = "activity";
     public final static String ACTIVITY_TABLE_FIELD_NAMED_ACTIVITY_ID = "activityId";
     public final static String ACTIVITY_TABLE_FIELD_LOG_DATE_TIME_START = "logDateTimeStart";
@@ -58,6 +61,7 @@ public class DBTools extends SQLiteOpenHelper {
     };
 
     private ArrayList<HashMap<String, String>> allActivityLog;
+//    private Context context;
 
     // Context : provides access to application-specific resources and classes
 
@@ -65,6 +69,7 @@ public class DBTools extends SQLiteOpenHelper {
 
         // Call use the database or to create it
         super(applicationcontext, "activitytimesheet.db", null, 1);
+
 
     }
 
@@ -75,6 +80,7 @@ public class DBTools extends SQLiteOpenHelper {
 /*
         SELECT l.logId, l.logDateTimeStart, l.logDateTimeEnd, l.activityId, l.activityGroupId, l.activityDescription, a.activityName, g.activityGroupName FROM activitylog l INNER JOIN activity a ON l.activityId = a.activityId INNER JOIN activitygroup g ON l.activityGroupId = g.activityGroupId ORDER BY l.logStartDateTime;
 */
+
         createCommands.add("CREATE TABLE " + ACTIVITY_LOG_TABLE_NAME + " (" +
                 "logId INTEGER PRIMARY KEY, " +
                 "logDateTimeStart DATETIME DEFAULT CURRENT_TIMESTAMP, " +
@@ -342,6 +348,30 @@ public class DBTools extends SQLiteOpenHelper {
         }
 
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    /*
+    If database already exist, return an empty string name.
+    Else, create the database.
+     */
+    public String createDB() {
+        StringBuilder dbName = new StringBuilder(getDatabaseName());
+        if (dbName != null && dbName.length() > 0) {
+            dbName.delete(0, dbName.length());
+            return dbName.toString();
+        }
+
+        return dbName.toString();
+
+    }
+
+    public Cursor getAllDBTables(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type = 'table' ", null);
+        db.close();
+        db = null;
+        return cursor;
     }
 
 
