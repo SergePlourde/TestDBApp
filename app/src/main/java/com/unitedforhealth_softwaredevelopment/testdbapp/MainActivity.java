@@ -2,17 +2,17 @@ package com.unitedforhealth_softwaredevelopment.testdbapp;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
-import android.database.Cursor;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 
 public class MainActivity extends ActionBarActivity {
+    public static final int REQUEST_CODE = 1;
     DBTools dbTools = new DBTools(this);
     private EditText dataDisplayEditText = null;
 
@@ -141,5 +142,16 @@ public class MainActivity extends ActionBarActivity {
 
         dataDisplayEditText.setText(sb.toString());
 
+    }
+
+    public void menuDBImportClick(MenuItem item) {
+        Intent fileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        fileIntent.setType("text/csv");
+        try {
+            startActivityForResult(fileIntent, REQUEST_CODE);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(MainActivity.this, "No app found for importing the file.", Toast.LENGTH_LONG).show();
+
+        }
     }
 }
